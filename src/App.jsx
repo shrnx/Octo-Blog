@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux'
 import authService from "./appwrite/auth.js"
 import { login, logout } from "./features/authSlice.js"
 import { set } from 'react-hook-form'
+import { Footer, Header } from './components/index.js'
+import { Outlet } from 'react-router-dom'
 
 function App() {
 
@@ -21,12 +23,20 @@ function App() {
       })
       .finally(() => setLoading(false))
   }, [])
-
+  // I will add loading screen instead of null
   return loading
-    ? null
+    ? <div className='flex justify-center items-center h-screen bg-gray-400'>Loading...</div>
     : <>
-          <div></div>
-      </>
+      <div className='min-h-screen min-w-screen flex flex-wrap content-between bg-gray-400'>
+        <div className='w-full block'>
+          <Header />
+          <main>
+           Todo <Outlet />
+          </main>
+          <Footer />
+        </div>
+      </div>
+    </>
 }
 
 export default App

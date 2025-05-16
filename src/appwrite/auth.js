@@ -17,23 +17,23 @@ export class AuthService {
     }
 
     // Since we dont want dependency like Appwrite, we will modify the code further
-    async createAccount({email, password, name}) {
+    async createAccount({ email, password, name }) {
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name);
-            if(userAccount) {
+            if (userAccount) {
                 // Call another method that if registered successfuly then login also
-                return this.login((email, password));
+                return this.login({ email, password });
             } else {
                 return userAccount
             }
-        } catch(error) {
+        } catch (error) {
             throw error;
         }
     }
     // So now if someday we decided to change to firebase or supabase we can simply just change the constructor and thoda sa 
     // async createAccount
 
-    async login({email, password}) {
+    async login({ email, password }) {
         try {
             return await this.account.createEmailPasswordSession(email, password);
             // Now just go to createAccount method and redirect to login
@@ -44,8 +44,9 @@ export class AuthService {
 
     async getCurrentUser() {
         try {
-            return this.account.get();
+            return await this.account.get();
         } catch (error) {
+            if(error.code === 401) return null;
             console.log("Appwrite Service :: getCurrentUser :: error", error);
         }
 
@@ -56,7 +57,7 @@ export class AuthService {
     async logout() {
         try {
             await this.account.deleteSession('current');
-        } catch(error) {
+        } catch (error) {
             console.log("Appwrite Service :: logout :: error", error);
         }
     }
@@ -64,17 +65,17 @@ export class AuthService {
     async logoutAll() {
         try {
             await this.account.deleteSessions();
-        } catch(error) {
+        } catch (error) {
             console.log("Appwrite Service :: logout :: error", error);
         }
     }
 }
 
-const AuthService = new AuthService();
+const authService = new AuthService();
 // What we want is when this object is called, those client and account should run(constructor)
 // Now this object we can use AuthService.login/.logout etc.....
 
-export default AuthService;
+export default authService;
 // Here we made a class, and to use this we need to make an object through this class, so that we can use all the methods
 // So why not make an object here then export it
 
