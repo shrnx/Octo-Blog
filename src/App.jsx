@@ -6,6 +6,7 @@ import { login, logout } from "./features/authSlice.js"
 import { set } from 'react-hook-form'
 import { Footer, Header } from './components/index.js'
 import { Outlet } from 'react-router-dom'
+import { HashLoader } from 'react-spinners'
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
   }, [])
   // I will add loading screen instead of null
   return loading
-    ? <div className='flex justify-center items-center h-screen bg-gray-400'>Loading...</div>
+    ? <div className='flex justify-center items-center h-screen bg-gray-400'><HashLoader color="#1F2937" /></div>
     : <>
       <div className='min-h-screen min-w-screen flex flex-wrap content-between bg-gray-400'>
         <div className='w-full block'>
