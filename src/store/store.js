@@ -8,7 +8,8 @@ import authReducer from "../features/authSlice.js"
 
 const store = configureStore({
     reducer: {
-        authReducer
+        auth: authReducer      // Now I can access this store directly by state.auth.   whatever
+        // authReducer      // But if I had done this only then I had to do it by state.authReducer.    This is why I was getting errors
     }
 });
 
